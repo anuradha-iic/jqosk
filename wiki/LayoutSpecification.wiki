@@ -4,8 +4,6 @@
 
 jQOSK stores different keyboard layouts as independent files that can be loaded using XMLHttpRequest (jQuery.get() or jQuery.getJSON()).
 
-== What the Layout Files Include ==
-
 Keyboard layouts can quickly become very complex, especially when taking into account modifiers and dead keys. However, keyboard layouts are also fairly predictable, and we can use that to our advantage. For instance:
 
  * While different keys have different functions (arrow keys move the caret, the backspace key deletes text, etc.), most keys do the same thing: they submit their current label/value as input to an application. We therefore only need to specify functions for special, non-character keys.
@@ -15,11 +13,23 @@ Keyboard layouts can quickly become very complex, especially when taking into ac
 So instead of having a layout specification filled with entries like this:
 
 {{{
-{"key_a": {"label": "a", "shiftedLabel": "A", "altLabel": "á", "shiftedAltLabel": "Á", "function": "enterText"}}
+{"id": "key_a", "label": "a", "shiftedLabel": "A", "altLabel": "á", "shiftedAltLabel": "Á", "function": "enterText"}
 }}}
 
 Many entries will look more like this:
 
 {{{
-{"key_a": {"label": "a", "altLabel": "á"}}
+{"id": "key_a", "label": "a", "altLabel": "á"}
 }}}
+
+== JSON or XML? ==
+
+My original thought was to format layout files as JSON. On April 4, 2008, I received an email from Brian Cherne suggesting that XML might be a better choice. He made a couple good arguments:
+
+ * For large, complex datasets, such as would be needed for a keyboard layout, XML is easier for humans to read and debug.
+ * XML can be validated against a schema or DTD.
+
+After reading Brian's email, I did some cursory research on [http://www.infoq.com/news/2006/12/json-vs-xml-debate the JSON vs. XML debate], and frankly didn't find much of an answer. However, I still think JSON is adequate or even preferable for a number of reasons:
+
+ * Especially with the use of default values as discussed above, along with liberal white space, the JSON layouts don't seem all that unreadable to me. Check out [http://code.google.com/p/jqosk/source/browse/trunk/layouts/us-international.json my US-international layout] as an example.
+ * Using JSON avoids the intermediate step of parsing an XML document. The object specified by the JSON string can be immediately inserted into and used by the controlling JavaScript keyboard object.
