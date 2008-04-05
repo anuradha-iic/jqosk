@@ -1,4 +1,4 @@
-#How jQOSK specifies keyboard layouts
+#summary How jQOSK specifies keyboard layouts
 
 = jQOSK Keyboard Layout Specification =
 
