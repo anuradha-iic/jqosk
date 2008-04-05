@@ -1,0 +1,13 @@
+#How jQOSK specifies keyboard layouts
+
+= jQOSK Keyboard Layout Specification =
+
+jQOSK stores different keyboard layouts as independent files that can be loaded using XMLHttpRequest (jQuery.get() or jQuery.getJSON()).
+
+== What the Layout Files Include ==
+
+Keyboard layouts can quickly become very complex, especially when taking into account modifiers and dead keys. However, keyboard layouts are also fairly predictable, and we can use that to our advantage. For instance:
+
+ * While different keys have different functions (arrow keys move the caret, the backspace key deletes text, etc.), most keys do the same thing: they submit their current label/value as input to an application. We therefore only need to specify functions for special, non-character keys.
+
+ * Alphabetic keys, including accented alphabetic keys, are capitalized when modified with the shift key. If we only specify shifted values for non-alphabetic keys, we can use toUpperCase() to automatically modify keys that don&rsquo;t have shifted values specified. 
