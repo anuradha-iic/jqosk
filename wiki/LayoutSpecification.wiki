@@ -32,4 +32,22 @@ My original thought was to format layout files as JSON. On April 4, 2008, I rece
 After reading Brian's email, I did some cursory research on [http://www.infoq.com/news/2006/12/json-vs-xml-debate the JSON vs. XML debate], and frankly didn't find much of an answer. However, I still think JSON is adequate or even preferable for a number of reasons:
 
  * Especially with the use of default values as discussed above, along with liberal white space, the JSON layouts don't seem all that unreadable to me. Check out [http://jqosk.googlecode.com/svn/trunk/layouts/us-international.json my US-international layout] as an example.
- * Using JSON avoids the intermediate step of parsing an XML document. The object specified by the JSON string can be immediately inserted into and used by the controlling !JavaScript keyboard object. 
+ * Using JSON avoids the intermediate step of parsing an XML document. The object specified by the JSON string can be immediately inserted into and used by the controlling !JavaScript keyboard object.
+ * Other reasons...?
+
+== The Format ==
+
+The entire layout string is an array of rows, which are in turn arrays of keys:
+
+{{{
+LAYOUT := '[' ROW(',' ROW)* ']'
+ROW := '[' KEY(',' KEY)* ']'
+}}}
+
+The keys are objects with the following properties:
+
+ * *id* (required) - an identifier for the key that may or mar not be the same as the key's current label.
+ * *label* (required) - the label that appears on the key when there are no active modifiers.
+ * *sLabel* - the label that appears on the key when the shift modifier is active. The default value is *label.toUpperCase()*.
+ * *altLabel* - the label that appears on the key when the altGr modifier is active. The default value is *label*.
+ * *sAltLabel* - the label that appears on the key when both the shift and altGr modifiers re active. The default value is *altLabel.toUpperCase()*.
