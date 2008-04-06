@@ -24,7 +24,7 @@ Many entries will look more like this:
 
 == JSON or XML? ==
 
-My original thought was to format layout files as JSON. On April 4, 2008, I received an email from Brian Cherne suggesting that XML might be a better choice. He made a couple good arguments:
+My original thought was to format layout files as JSON. Brian Cherne suggested that XML might be a better choice. He made a couple good arguments:
 
  * For large, complex datasets, such as would be needed for a keyboard layout, XML is easier for humans to read and debug.
  * XML can be validated against a schema or DTD.
