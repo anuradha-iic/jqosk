@@ -44,10 +44,12 @@ LAYOUT := '[' ROW(',' ROW)* ']'
 ROW := '[' KEY(',' KEY)* ']'
 }}}
 
-The keys are objects with the following properties:
+The keys represent objects with the following properties:
 
  * *id* (required) - an identifier for the key that may or mar not be the same as the key's current label.
  * *label* (required) - the label that appears on the key when there are no active modifiers.
  * *sLabel* - the label that appears on the key when the shift modifier is active. The default value is *label.toUpperCase()*.
  * *altLabel* - the label that appears on the key when the altGr modifier is active. The default value is *label*.
  * *sAltLabel* - the label that appears on the key when both the shift and altGr modifiers re active. The default value is *altLabel.toUpperCase()*.
+ * *func* - the name of the keyboard's method that gets called when the key is activated. The default is *"typelabel"*.
+ * *sFunc*, *altFunc* & *sAltFunc* - the names of the keyboard's methods that get called when the key is activated with the shift and/or altGr modifiers. The default is *func*.
