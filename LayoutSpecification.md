@@ -1,0 +1,53 @@
+# jQOSK Keyboard Layout Specification #
+
+jQOSK stores different keyboard layouts as independent files that can be loaded using XMLHttpRequest (jQuery.get() or jQuery.getJSON()).
+
+Keyboard layouts can quickly become very complex, especially when taking into account modifiers and dead keys. However, keyboard layouts are also fairly predictable, and we can use that to our advantage. For instance:
+
+  * While different keys have different functions (arrow keys move the caret, the backspace key deletes text, etc.), most keys do the same thing: they submit their current label/value as input to an application. We therefore only need to specify functions for special, non-character keys.
+
+  * Alphabetic keys, including accented alphabetic keys, are capitalized when modified with the shift key. If we only specify shifted values for non-alphabetic keys, we can use toUpperCase() to automatically modify keys that don't have shifted values specified.
+
+So instead of having a layout specification filled with entries like this:
+
+```
+{"id": "key_a", "label": "a", "shiftedLabel": "A", "altLabel": "á", "shiftedAltLabel": "Á", "function": "enterText"}
+```
+
+Many entries will look more like this:
+
+```
+{"id": "key_a", "label": "a", "altLabel": "á"}
+```
+
+## JSON or XML? ##
+
+My original thought was to format layout files as JSON. Brian Cherne suggested that XML might be a better choice. He made a couple good arguments:
+
+  * For large, complex datasets, such as would be needed for a keyboard layout, XML is easier for humans to read and debug.
+  * XML can be validated against a schema or DTD.
+
+After reading Brian's email, I did some cursory research on [the JSON vs. XML debate](http://www.infoq.com/news/2006/12/json-vs-xml-debate), and frankly didn't find much of an answer. However, I still think JSON is adequate or even preferable for a number of reasons:
+
+  * Especially with the use of default values as discussed above, along with liberal white space, the JSON layouts don't seem all that unreadable to me. Check out [my US-international layout](http://jqosk.googlecode.com/svn/trunk/layouts/us-international.json) as an example.
+  * Using JSON avoids the intermediate step of parsing an XML document. The object specified by the JSON string can be immediately inserted into and used by the controlling JavaScript keyboard object.
+  * Other reasons...?
+
+## The Format ##
+
+The entire layout string is an array of rows, which are in turn arrays of keys:
+
+```
+LAYOUT := '[' ROW(',' ROW)* ']'
+ROW := '[' KEY(',' KEY)* ']'
+```
+
+The keys represent objects with the following properties:
+
+  * **id** (required) - an identifier for the key that may or mar not be the same as the key's current label.
+  * **label** (required) - the label that appears on the key when there are no active modifiers.
+  * **sLabel** - the label that appears on the key when the shift modifier is active. The default value is **label.toUpperCase()**.
+  * **altLabel** - the label that appears on the key when the altGr modifier is active. The default value is **label**.
+  * **sAltLabel** - the label that appears on the key when both the shift and altGr modifiers re active. The default value is **altLabel.toUpperCase()**.
+  * **func** - the name of the keyboard's method that gets called when the key is activated. The default is **"typelabel"**.
+  * **sFunc**, **altFunc** & **sAltFunc** - the names of the keyboard's methods that get called when the key is activated with the shift and/or altGr modifiers. The default is **"typelabel"**.
